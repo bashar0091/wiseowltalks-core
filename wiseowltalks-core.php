@@ -33,7 +33,7 @@ require_once plugin_dir_path(__FILE__) . 'shortcodes/episodes-playlist-single.ph
 function wiseowltalkscore_enqueue_scripts()
 {
     // CSS file 
-    wp_enqueue_style('customize-style', plugin_dir_url(__FILE__) . 'assets/css/style.css', false, '1.0.0', '');
+    wp_enqueue_style('customize-style', plugin_dir_url(__FILE__) . 'assets/css/style.css', false, '1.1.0', '');
 
     // JS file 
     wp_enqueue_script('customize-script', plugin_dir_url(__FILE__) . 'assets/js/script.js', array('jquery'), '1.0.0', true);
