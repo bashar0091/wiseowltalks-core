@@ -99,7 +99,7 @@ function episodes_playlist_shortcode()
                         $featured_image = get_the_post_thumbnail_url();
                         $rssfeed_url = get_field('rss_feed_url');
                         $feed_title  = rss_feed_title($rssfeed_url, 'title');
-                        $description  = get_the_content();
+                        $description  = get_the_excerpt();
                     ?>
                         <div
                             data-elementor-type="loop-item"

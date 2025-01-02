@@ -12,6 +12,9 @@ function episodes_playlist_single_shortcode()
     ob_start();
 
     $rssfeed_url = get_field('rss_feed_url');
+    if (empty($rssfeed_url)) {
+        return;
+    }
     $feed_title  = rss_feed_title($rssfeed_url, 'title');
     $channel_name  = rss_feed_title($rssfeed_url, 'channel');
     $channel_url  = rss_feed_title($rssfeed_url, 'channel_url');
