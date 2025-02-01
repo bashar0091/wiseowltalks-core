@@ -14,12 +14,69 @@ function dropdown_filter_shortcode()
         'hide_empty' => false,
     ]);
 ?>
+    <style>
+        .tag_list_pc {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            list-style-type: none;
+        }
+
+        .tag_list_pc input[type="radio"] {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .tag_list_pc label {
+            cursor: pointer;
+            padding: 6px 22px;
+            background: #D2982D;
+            color: #fff;
+            border-radius: 100px;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .tag_list_pc label.active,
+        .tag_list_pc label:hover {
+            background: #095269
+        }
+    </style>
+    <ul class="tag_list_pc">
+        <li>
+            <label class="active">
+                <input class="tag_filter_on_input" data-field="tag" type="radio" name="tag_list_item" value="">
+                All
+            </label>
+        </li>
+        <?php
+        if (!is_wp_error($terms)) {
+            foreach ($terms as $term) {
+        ?>
+                <li>
+                    <label>
+                        <input class="tag_filter_on_input" data-field="tag" type="radio" name="tag_list_item" value="<?php echo esc_attr($term->slug); ?>">
+                        <?php echo esc_html($term->name); ?>
+                    </label>
+                </li>
+        <?php
+            }
+        }
+        ?>
+    </ul>
     <div
         class="elementor-element elementor-element-c0b4669 elementor-button-align-stretch elementor-widget elementor-widget-form"
         data-id="c0b4669"
         data-element_type="widget"
         data-settings='{"step_next_label":"Next","step_previous_label":"Previous","button_width":"100","step_type":"number_text","step_icon_shape":"circle"}'
-        data-widget_type="form.default">
+        data-widget_type="form.default" style="display:none">
         <div class="elementor-widget-container">
             <form class="elementor-form">
                 <div class="elementor-form-fields-wrapper elementor-labels-">

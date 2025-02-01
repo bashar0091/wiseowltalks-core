@@ -25,6 +25,8 @@ require_once plugin_dir_path(__FILE__) . 'admin/menu/menu.php';
  */
 require_once plugin_dir_path(__FILE__) . 'shortcodes/episodes-playlist.php';
 require_once plugin_dir_path(__FILE__) . 'shortcodes/episodes-playlist-single.php';
+require_once plugin_dir_path(__FILE__) . 'shortcodes/dynamic-gridv1.php';
+require_once plugin_dir_path(__FILE__) . 'shortcodes/episode-search.php';
 
 /**
  * Membership required File
@@ -40,6 +42,14 @@ require_once plugin_dir_path(__FILE__) . 'youtube-video/dropdown-filter-shortcod
 require_once plugin_dir_path(__FILE__) . 'youtube-video/search-filter-shortcode.php';
 require_once plugin_dir_path(__FILE__) . 'youtube-video/youtube-video-shortcode.php';
 require_once plugin_dir_path(__FILE__) . 'youtube-video/ajax.php';
+
+/**
+ * currency required File
+ */
+require_once plugin_dir_path(__FILE__) . 'currency/product-currency.php';
+require_once plugin_dir_path(__FILE__) . 'currency/currency-shortocde.php';
+require_once plugin_dir_path(__FILE__) . 'currency/ajax.php';
+require_once plugin_dir_path(__FILE__) . 'includes/meta-box.php';
 
 
 /**
@@ -94,3 +104,69 @@ function rss_feed_title($rssfeed_url = '', $render = 'title')
     }
     return null;
 }
+
+
+/**
+ * add verified column in user table
+ */
+function add_user_status_column($columns)
+{
+    $columns['user_status'] = __('Status', 'wiseowltalks-core');
+    return $columns;
+}
+add_filter('manage_users_columns', 'add_user_status_column');
+function show_user_status_column_content($value, $column_name, $user_id)
+{
+    if ('user_status' === $column_name) {
+        // Get the user status from user meta
+        $user_status = get_user_meta($user_id, 'user_status', true);
+
+        // Set default status if not found
+        if (!$user_status) {
+            $user_status = 'not_verified';
+        }
+
+        // Conditional logic for coloring
+        if ($user_status === 'verified') {
+            return '<span style="color: green; font-weight: bold;">Verified</span>';
+        } else {
+            return '<span style="color: red; font-weight: bold;">Not Verified</span>';
+        }
+    }
+    return $value;
+}
+add_filter('manage_users_custom_column', 'show_user_status_column_content', 10, 3);
+
+
+/**
+ * redirect_logged_in_users_to_dashboard
+ */
+function redirect_logged_in_users_to_dashboard()
+{
+    // Check if the user is logged in and is on the "Become a Member" page
+    if (is_user_logged_in() && is_page('become-a-member')) {
+        // Redirect to the dashboard page
+        wp_redirect(home_url('/dashboard'));
+        exit;
+    }
+}
+
+// Hook into 'template_redirect' action to perform the redirect
+add_action('template_redirect', 'redirect_logged_in_users_to_dashboard');
+
+
+/**
+ * redirect_logged_out_users_to_login
+ */
+function redirect_logged_out_users_to_login()
+{
+    // Check if the user is logged in and is on the "Become a Member" page
+    if (!is_user_logged_in() && is_page('dashboard')) {
+        // Redirect to the dashboard page
+        wp_redirect(home_url('/become-a-member/?login=true'));
+        exit;
+    }
+}
+
+// Hook into 'template_redirect' action to perform the redirect
+add_action('template_redirect', 'redirect_logged_out_users_to_login');

@@ -173,6 +173,78 @@
   opacity: 0.5;
 }
 
+.form_processing.is_process {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.loader_img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 99;
+  transform: translate(-50%, -50%);
+}
+.loader_img img {
+  width: 64px;
+}
+
+.wise_iframe_wrap iframe {
+  height: 225px;
+  border-radius: 15px;
+}
+
+.wise_flex {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.wise_flex .flag_icon {
+  width: 18px;
+}
+
+.wise_dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: 20px;
+  background: #fff;
+  transform: translateX(-50%);
+  min-width: 120px;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.parent_flag_dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.parent_flag_dropdown:hover .wise_dropdown {
+  visibility: visible;
+  opacity: 1;
+}
+
+.wise_dropdown label {
+  padding: 10px;
+  color: #1e1e1e;
+  border-bottom: 1px solid #ddd;
+  transition: 0.3s;
+  background: transparent;
+  font-weight: 500;
+}
+
+.wise_dropdown label:hover {
+  background: #d2982d;
+  color: #fff;
+}
+
+.wise_dropdown input {
+  position: absolute;
+  visibility: hidden;
+}
+
 @media only screen and (max-width: 950px) {
   #playlist {
     margin: 0 auto;

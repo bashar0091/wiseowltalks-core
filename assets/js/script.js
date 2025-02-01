@@ -11,29 +11,68 @@ jQuery(document).ready(function ($) {
   });
 
   /**
-   * Login Form on submit
+   * Generic Form Submission Handler
    */
-  $(document).on("submit", ".login_form_on_submit", function (e) {
-    e.preventDefault();
-    var t = $(this);
-    var register_data = t.serialize();
-    var formData = new FormData(this);
-    formData.append("action", "memebership_handler");
-    formData.append("register_data", register_data);
-    $.ajax({
-      type: "POST",
-      url: dataAjax.ajaxurl,
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function (response) {
-        console.log("Success:", response);
-      },
-      error: function (error) {
-        console.log(error);
-      },
+  function handleFormSubmit(formClass, actionType) {
+    $(document).on("submit", formClass, function (e) {
+      e.preventDefault();
+      var t = $(this);
+      var register_data = t.serialize();
+      var formData = new FormData(this);
+      formData.append("action", actionType);
+      formData.append("register_data", register_data);
+
+      t.find(".form_processing").addClass("is_process");
+      t.find(".loader_img").show();
+      t.find(".error_text").empty();
+
+      $.ajax({
+        type: "POST",
+        url: dataAjax.ajaxurl,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          if (response.success) {
+            if (actionType === "membership_handler") {
+              t.find(".form_processing").html(
+                '<p style="text-align: center; color: #000;"> <b>A verify email is sent to your provided email, <br />Please Verify...</b></p>'
+              );
+            } else if (actionType === "membership_password_handler") {
+              t.find(".error_text").html(
+                `<p style="color:green;margin-bottom:10px;">${response.data.message}</p>`
+              );
+              if (response.data.redirect_url) {
+                window.location.href = response.data.redirect_url;
+              }
+            } else if (actionType === "login_submission_handler") {
+              t.find(".error_text").html(
+                `<p style="color:green;margin-bottom:10px;">${response.data.message}</p>`
+              );
+              if (response.data.redirect_url) {
+                window.location.href = response.data.redirect_url;
+              }
+            }
+          } else {
+            t.find(".error_text").html(
+              `<p style="color:red;margin-bottom:10px;">${response.data.message}</p>`
+            );
+          }
+
+          t.find(".form_processing").removeClass("is_process");
+          t.find(".loader_img").hide();
+        },
+        error: function (error) {
+          console.log(error);
+        },
+      });
     });
-  });
+  }
+
+  // Use the generic function for both forms
+  handleFormSubmit(".login_form_on_submit", "membership_handler");
+  handleFormSubmit(".password_form_on_submit", "membership_password_handler");
+  handleFormSubmit(".login_submission_on_submit", "login_submission_handler");
 
   /**
    * search_filter_on_input
@@ -60,6 +99,9 @@ jQuery(document).ready(function ($) {
       var ajax_loader_opacity = $(".ajax_loader_opacity");
       var ajax_loader_image = $(".ajax_loader_image");
 
+      $(".tag_list_pc label").removeClass("active");
+      t.closest("label").addClass("active");
+
       ajax_loader_opacity.addClass("show");
       ajax_loader_image.show();
 
@@ -81,7 +123,7 @@ jQuery(document).ready(function ($) {
         success: function (response) {
           if (response.success) {
             video_itemse.remove();
-            render_youtube_video_output.append(response.data.output);
+            render_youtube_video_output.html(response.data.output);
             ajax_loader_opacity.removeClass("show");
             ajax_loader_image.hide();
           }
@@ -92,4 +134,54 @@ jQuery(document).ready(function ($) {
       });
     }, 300)
   );
+
+  /**
+   *
+   * Member Form Tab
+   *
+   */
+  $(document).on("click", "#member_otp_tab", function () {
+    $(".tabs .tab").removeClass("active");
+    $(this).closest(".tab").addClass("active");
+    $(".member_form").removeClass("active");
+    $(".member_otp_form").addClass("active");
+  });
+  $(document).on("click", "#member_login_tab", function () {
+    $(".tabs .tab").removeClass("active");
+    $(this).closest(".tab").addClass("active");
+    $(".member_form").removeClass("active");
+    $(".member_login_form").addClass("active");
+  });
+
+  /**
+   *
+   * currency_switch_click
+   *
+   */
+  $(document).on("click", ".currency_switch_click", function () {
+    var t = $(this);
+    var flag = t.data("flag");
+    var countrycode = t.data("countrycode");
+    var slug = t.data("slug");
+    var symbol = t.data("symbol");
+    $.ajax({
+      type: "POST",
+      url: dataAjax.ajaxurl,
+      data: {
+        action: "currency_switch_handler",
+        flag: flag,
+        countrycode: countrycode,
+        slug: slug,
+        symbol: symbol,
+      },
+      success: function (response) {
+        if (response.success) {
+          location.reload();
+        }
+      },
+      error: function (error) {
+        console.error("Error:", error);
+      },
+    });
+  });
 });

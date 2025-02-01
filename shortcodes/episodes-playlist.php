@@ -101,12 +101,13 @@ function episodes_playlist_shortcode()
                         $feed_title  = rss_feed_title($rssfeed_url, 'title');
                         $description  = get_the_excerpt();
                     ?>
+                        <?php echo do_shortcode('[dynamic_gridv1]'); ?>
                         <div
                             data-elementor-type="loop-item"
                             data-elementor-id="1010"
                             class="elementor elementor-1010 e-loop-item e-loop-item-428 post-428 post type-post status-publish format-standard has-post-thumbnail hentry category-news tag-coding tag-interview tag-news tag-notes tag-podcasting tag-videos"
                             data-elementor-post-type="elementor_library"
-                            data-custom-edit-handle="1">
+                            data-custom-edit-handle="1" style="display: none;">
                             <div class="elementor-element elementor-element-4cd439d e-flex e-con-boxed e-con e-parent e-lazyloaded" data-id="4cd439d" data-element_type="container" data-settings='{"background_background":"classic"}'>
                                 <div class="e-con-inner">
                                     <div class="elementor-element elementor-element-bbf5ca0 elementor-widget elementor-widget-image" data-id="bbf5ca0" data-element_type="widget" data-widget_type="image.default">
