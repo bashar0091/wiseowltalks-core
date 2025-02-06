@@ -137,6 +137,51 @@ jQuery(document).ready(function ($) {
 
   /**
    *
+   * episode_search_filter_on_input
+   *
+   */
+  $(document).on(
+    "input",
+    ".episode_search_filter_on_input",
+    debounce(function (e) {
+      e.preventDefault();
+      var t = $(this);
+      var field = t.data("field");
+      var get_val = t.val();
+      var render_youtube_video_output = $(".render_episode_video_output");
+      var video_itemse = $(".video_itemse");
+      var ajax_loader_opacity = $(".ajax_loader_opacity");
+      var ajax_loader_image = $(".ajax_loader_image");
+
+      ajax_loader_opacity.addClass("show");
+      ajax_loader_image.show();
+
+      // Adjusting data structure
+      var ajaxData = {
+        action: "episode_search_filter_handler",
+      };
+
+      $.ajax({
+        type: "POST",
+        url: dataAjax.ajaxurl,
+        data: ajaxData,
+        success: function (response) {
+          if (response.success) {
+            video_itemse.remove();
+            render_youtube_video_output.html(response.data.output);
+            ajax_loader_opacity.removeClass("show");
+            ajax_loader_image.hide();
+          }
+        },
+        error: function (error) {
+          console.error("Error:", error);
+        },
+      });
+    }, 300)
+  );
+
+  /**
+   *
    * Member Form Tab
    *
    */

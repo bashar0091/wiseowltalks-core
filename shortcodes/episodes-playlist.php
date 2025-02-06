@@ -10,6 +10,7 @@ defined('ABSPATH') || exit;
 function episodes_playlist_shortcode()
 {
     ob_start();
+    $loader = plugin_dir_url(__FILE__) . '../assets/images/loader.gif';
     $playlist_args = array(
         'post_type' => 'episodes-playlist',
         'posts_per_page' => -1,
@@ -23,8 +24,11 @@ function episodes_playlist_shortcode()
             data-element_type="widget"
             data-settings='{"template_id":"1010","pagination_type":"prev_next","row_gap":{"unit":"px","size":20,"sizes":[]},"_skin":"post","columns":"3","columns_tablet":"2","columns_mobile":"1","edit_handle_selector":"[data-elementor-type=\"loop-item\"]","pagination_load_type":"page_reload","row_gap_tablet":{"unit":"px","size":"","sizes":[]},"row_gap_mobile":{"unit":"px","size":"","sizes":[]}}'
             data-widget_type="loop-grid.post">
-            <div class="elementor-widget-container">
-                <div class="elementor-loop-container elementor-grid">
+            <span class="ajax_loader_image" style="display: none;">
+                <img src="<?php echo esc_url($loader) ?>">
+            </span>
+            <div class="elementor-widget-container ajax_loader_opacity">
+                <div class="elementor-loop-container elementor-grid render_episode_video_output">
                     <style id="loop-1010">
                         .elementor-1010 .elementor-element.elementor-element-4cd439d {
                             --display: flex;

@@ -11,7 +11,6 @@ function youtube_video_shortcode()
 {
     ob_start();
     $loader = plugin_dir_url(__FILE__) . '../assets/images/loader.gif';
-    ob_start();
     $args = array(
         'post_type' => 'youtube-video',
         'posts_per_page' => -1,

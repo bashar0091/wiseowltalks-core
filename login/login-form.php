@@ -551,8 +551,8 @@ function membership_form_shortcode()
                 <!-- Privacy & T&C -->
                 <div class="privacy-and-tnc">
                     <span id="privacy-and-tnc-text">By continuing, you agree to our</span> <br>
-                    <a id="label-tnc" href="#!" target="_blank">terms of services</a> <span id="label-and">and</span>
-                    <a id="label-privacy" href="#!" target="_blank">privacy policy</a>
+                    <a id="label-tnc" href="https://wiseowltalks.com/terms-of-services/" target="_blank">terms of services</a> <span id="label-and">and</span>
+                    <a id="label-privacy" href="https://wiseowltalks.com/privacy-policy/" target="_blank">privacy policy</a>
                 </div>
             </div>
         </section>
